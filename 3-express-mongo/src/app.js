@@ -15,8 +15,8 @@ const livros = [
 ]
 
 function buscaLivro(id) { //-> funcao para retornar o id do livro
-    return livros.findIndex(livro => {
-        return livro.id === Number(id);
+    return livros.findIndex(livro => { // -> findIndex retorna em qual indice está determinado elemento 
+        return livro.id === Number(id); // -> Em HTTP os dados trafegam em formato de string, convertemos para numeros a propriedade ID.
     })
 }
 
@@ -30,7 +30,7 @@ app.get("/livros", (req, res) => {
 });
 
 app.get("/livros/:id", (req, res) => {
-    const index = buscaLivro(req.params.id);
+    const index = buscaLivro(req.params.id); // -> Busca um livro pelo seu indice no array 
     res.status(200).json(livros[index]);
 })
 
@@ -45,6 +45,10 @@ app.put("/livros/:id", (req, res) => {
     res.status(200).json(livros);
 });
 
-
+app.delete("/livros/:id", (req, res) => {
+    const index = buscaLivro(req.params.id);
+    livros.splice(index, 1);
+    res.status(200).send("Livro excluido com sucesso")
+})
 
 export default app;
