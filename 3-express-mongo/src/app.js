@@ -1,32 +1,28 @@
 import express from "express";
+import conectaNaDataBase from "./config/dbConnet.js";
+import livro from "./models/Livro.js";
+
+const conexao = await conectaNaDataBase();
+
+conexao.on("error", (erro) => {
+    console.error("erro de conexao", erro); 
+})
+
+conexao.once("open", () =>{
+    console.log("conexao com o banco feita com sucesso");
+});
 
 const app = express();
 app.use(express.json());
-
-const livros = [
-    {
-        id: 1,
-        titulo: "O senhor dos aneis"
-    },
-    {
-        id: 2,
-        titulo: "O Hobbit"
-    }
-]
-
-function buscaLivro(id) { //-> funcao para retornar o id do livro
-    return livros.findIndex(livro => { // -> findIndex retorna em qual indice está determinado elemento 
-        return livro.id === Number(id); // -> Em HTTP os dados trafegam em formato de string, convertemos para numeros a propriedade ID.
-    })
-}
 
 
 app.get("/", (req, res) => {
     res.status(200).send("Curso de Node.js");
 });
 
-app.get("/livros", (req, res) => {
-    res.status(200).json(livros);
+app.get("/livros", async (req, res) => {
+    const listaLivros = await livro.find({});
+    res.status(200).json(listaLivros);
 });
 
 app.get("/livros/:id", (req, res) => {
@@ -52,3 +48,4 @@ app.delete("/livros/:id", (req, res) => {
 })
 
 export default app;
+
