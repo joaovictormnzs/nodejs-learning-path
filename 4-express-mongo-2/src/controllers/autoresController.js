@@ -66,7 +66,7 @@ class AutorController {
 
             const autorResultado = await autores.findByIdAndDelete(id);
 
-            if (autorResultado !== null ){
+            if (autorResultado !== null) {
                 res.status(200).send({ message: "Autor removido com sucesso" });
             } else {
                 next(new NaoEncontrado("Id do Autor não localizado."));
@@ -77,5 +77,6 @@ class AutorController {
     };
 
 }
+
 
 export default AutorController;
